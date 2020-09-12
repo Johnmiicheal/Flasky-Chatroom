@@ -24,6 +24,7 @@ class ChatWindow(tk.Toplevel):
 
     #Profile Picture Frame Area
         self.profile_picture = tk.PhotoImage(file="image/avatar4.png")
+
         self.friend_profile_picture = tk.PhotoImage(file = friend_avatar)
 
         self.profile_picture_area = tk.Label(self.right_frame, image=self.profile_picture, relief=tk.RIDGE)
@@ -45,7 +46,7 @@ class ChatWindow(tk.Toplevel):
     #Smilie Characters Area
         self.text_area.smilies = []
 
-        self.smilies_image = tk.PhotoImage(file="<smilies/dir>")
+        self.smilies_image = tk.PhotoImage(file="smilies/mikulka-smile-cool.png")
         self.smilie_button = ttk.Button(self.bottom_frame, 
                             image = self.smilies_image, command=self.smilie_chooser, style="smilie.TButton")
 
@@ -69,30 +70,35 @@ class ChatWindow(tk.Toplevel):
         self.bind("<Return>", self.send_message)
         self.text_area.bind("<Return>", self.send_message)
 
-    def send_message(self, event=None):
-        message = self.text_area.get(1.0, tk.END)
 
-        if message.strip():
+    def send_message(self, event=None):
+        message = self.text_area.get(1.0, tk.END)        
+
+        if message.strip() or len(self.text_area.smilies):
             message = "Me: " + message
             self.message_area.configure(state='normal')
             self.message_area.insert(tk.END, message)
+
+            if len(self.text_area.smilies):
+                last_line_no = self.message_area.index(tk.END)
+                last_line_no = str(last_line_no).split('.')[0]
+                last_line_no = str(int(last_line_no) - 2)
+
+            for index, file in self.text_area.smilies:
+                char_index = str(index).split('.')[1]
+                char_index =str(int(char_index) + 4)
+                smilie_index = last_line_no + '.' + char_index
+                self.message_area.image_create(smilie_index, image=file)
+
+            self.text_area.smilies = []
             self.message_area.configure(state='disabled')
             self.text_area.delete(1.0, tk.END)
-        return "break"
+        return "break"        
 
-        if len(self.text_area.smilies):
-            last_line_no = self.message_area.index(tk.END)
-            last_line_no = str(last_line_no).split('.')[0]
-            last_line_no = str(int(last_line_no) - 2)
-
-        for index, file in self.text_area.smilies:
-            char_index = str(index).split('.')[1]
-            char_index =str(int(char_index) + 4)
-            smilie_index = last_line_no + '.' + char_index
-            self.message_area.image_create(smilie_index, image = file)
         
-        self.text_area.smilies = []
-       
+     
+        
+
 
     def configure_styles(self):
         style=ttk.Style()

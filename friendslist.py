@@ -1,5 +1,6 @@
 #15/08/2020
-#By MiTECH
+#11/09/2020
+#By CRiTEK
 
 import tkinter as tk
 import tkinter.ttk as ttk
