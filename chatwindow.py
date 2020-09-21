@@ -3,7 +3,7 @@ import tkinter.ttk as ttk
 from smilieselect import SmilieSelect
 
 class ChatWindow(tk.Toplevel):
-    def __init__(self, master, friend_name, friend_avatar, **kwargs):
+    def __init__(self, master, friend_name, friend_username, friend_avatar, **kwargs):
         super().__init__(**kwargs)
         self.master = master
         self.title(friend_name)
@@ -14,6 +14,10 @@ class ChatWindow(tk.Toplevel):
         self.right_frame = tk.Frame(self)
         self.left_frame = tk.Frame(self)
         self.bottom_frame = tk.Frame(self.left_frame)
+
+        #
+        self.friend_username = friend_username
+        #
 
         self.message_area = tk.Text(self.left_frame, bg="white", fg="black", wrap=tk.WORD, width=30)
         self.scrollbar = ttk.Scrollbar(self.left_frame, orient='vertical',
@@ -107,7 +111,7 @@ class ChatWindow(tk.Toplevel):
 
 if __name__ == '__main__':
     w = tk.Tk()
-    c = ChatWindow(w, 'friend_', 'image/avatar4.png')
+    c = ChatWindow(w,'friend_name','username', 'image/avatar4.png')
     c.protocol("WM_DELETE_WINDOW", w.destroy)
     w.mainloop()
 
